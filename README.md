@@ -26,7 +26,7 @@ The REST API to the example app is described below.
 
 ## Create new recipe
 ### Request
-```POST /recipe```
+```POST /recipes```
 
 ```Content-Type: application/json```
 
@@ -43,7 +43,7 @@ Request body
 }
 ```
 
-eg: http://localhost:8080/recipe/
+eg: http://localhost:8080/recipes/
 
 ### Response
 ```
@@ -67,11 +67,11 @@ Content-Type: application/json
 
 ## Get list of recipes
 ### Request
-```GET /recipe```
+```GET /recipes```
 
 ```Content-Type: application/json```
 
-eg: http://localhost:8080/recipe/
+eg: http://localhost:8080/recipes/
 
 ### Response
 ```
@@ -96,11 +96,11 @@ Content-Type: application/json
 ```
 ## Get specific recipe
 ### Request
-```GET /recipe/id```
+```GET /recipes/id```
 
 ```Content-Type: application/json```
 
-eg: http://localhost:8080/recipe/62f151e322515f7318da0990
+eg: http://localhost:8080/recipes/62f151e322515f7318da0990
 
 ### Response
 ```
@@ -124,11 +124,11 @@ Content-Type: application/json
 
 ## Get a non-existent recipe
 ### Request
-```GET /recipe/id```
+```GET /recipes/id```
 
 ```Content-Type: application/json```
 
-eg: http://localhost:8080/recipe/2efe31a4bf0d67460064e9b
+eg: http://localhost:8080/recipes/2efe31a4bf0d67460064e9b
 
 ### Response
 ```
@@ -140,12 +140,12 @@ Content-Type: application/json
 {
     "timestamp": "2022-09-18T12:57:58.611+00:00",
     "message": "Recipe not found for this id :: 2efe31a4bf0d67460064e9b",
-    "details": "uri=/recipe/2efe31a4bf0d67460064e9b"
+    "details": "uri=/recipes/2efe31a4bf0d67460064e9b"
 }
 ```
 ## Update a existing recipe
 ### Request
-```PUT /recipe/id```
+```PUT /recipes/id```
 
 ```Content-Type: application/json```
 
@@ -163,7 +163,7 @@ Request body:
 }
 ```
 
-eg: http://localhost:8080/recipe/62f151e322515f7318da0990
+eg: http://localhost:8080/recipes/62f151e322515f7318da0990
 
 ### Response
 ```
@@ -187,7 +187,7 @@ Content-Type: application/json
 ```
 ## Update recipe using recipe Json Patch
 ### Request
-```PATCH /recipe/id```
+```PATCH /recipes/id```
 
 ```Content-Type: application/json-patch+json```
 
@@ -210,7 +210,7 @@ Status: 204 OK
 
 ## Update recipe using recipe Json Patch
 ### Request
-```PATCH /recipe/id```
+```PATCH /recipes/id```
 
 ```Content-Type: application/merge-patch+json```
 
@@ -222,7 +222,7 @@ Request body:
 }
 ```
 
-eg: http://localhost:8080/recipe/62f151e322515f7318da0990
+eg: http://localhost:8080/recipes/62f151e322515f7318da0990
 
 ### Response
 ```
@@ -239,12 +239,12 @@ Status: 204 OK
     - ingredients: use excludes / includes eg: ```includes=potato```  or ```excludes:potato```
 
 ### Request
-```GET /recipe?includes=potato&&servings=2&&category=VEGETARIAN```
+```GET /recipes?includes=potato&&servings=2&&category=VEGETARIAN```
 
 
 ```Content-Type: application/json```
 
-eg: http://localhost:8080/recipe?includes=potato&&servings=2&&category=VEGETARIAN
+eg: http://localhost:8080/recipes?includes=potato&&servings=2&&category=VEGETARIAN
 
 ### Response
 ```
@@ -270,11 +270,11 @@ Content-Type: application/json
 ```
 ## Delete recipe with id
 ### Request
-```DELETE /recipe/id```
+```DELETE /recipes/id```
 
 ```Content-Type: application/json```
 
-eg: http://localhost:8080/recipe/62f151e322515f7318da0990
+eg: http://localhost:8080/recipes/62f151e322515f7318da0990
 
 ### Response
 ```
@@ -286,11 +286,11 @@ Status: 204 OK
 
 ## Delete all the recipies
 ### Request
-```DELETE /recipe```
+```DELETE /recipes```
 
 ```Content-Type: application/json```
 
-eg: http://localhost:8080/recipe
+eg: http://localhost:8080/recipes
 
 ### Response
 ```
