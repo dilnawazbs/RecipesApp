@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
 public class UnprocessableEntityException extends RuntimeException {
 
-    public UnprocessableEntityException(Throwable cause) {
-        super(cause);
-    }
+  public UnprocessableEntityException(Throwable cause) {
+    super(cause);
+  }
 }

@@ -4,5 +4,6 @@ import lombok.Getter;
 
 @Getter
 public enum Category {
-    VEGETARIAN, NON_VEGETARIAN;
-} 
+  VEGETARIAN,
+  NON_VEGETARIAN,
+}

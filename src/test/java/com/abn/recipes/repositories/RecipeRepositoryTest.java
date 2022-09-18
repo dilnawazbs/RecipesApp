@@ -1,121 +1,147 @@
 package com.abn.recipes.repositories;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
-import org.springframework.data.mongodb.core.MongoTemplate;
-
 import static org.assertj.core.api.Assertions.assertThat;
-
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.TestInstance;
 
 import com.abn.recipes.domain.Category;
 import com.abn.recipes.domain.Recipe;
 import com.abn.recipes.utils.TestUtil;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
+import org.springframework.data.mongodb.core.MongoTemplate;
 
 @DataMongoTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class RecipeRepositoryTest {
 
-    @Autowired
-    private MongoTemplate mongoTemplate;
+  @Autowired
+  private MongoTemplate mongoTemplate;
 
-    @Autowired
-    private RecipeRepository recipeRepository;
+  @Autowired
+  private RecipeRepository recipeRepository;
 
-    @BeforeEach
-	public void addDataBase() {
-		recipeRepository.deleteAll();
-	}
+  @BeforeEach
+  public void addDataBase() {
+    recipeRepository.deleteAll();
+  }
 
-    @AfterEach
-	public void deleteDataBase() {
-		mongoTemplate.getDb().drop();
-	}
-    
-    @Test
-    public void should_find_no_recipes_if_repository_is_empty() {
-        Iterable<Recipe> recipes = recipeRepository.findAll();
-        assertThat(recipes).isEmpty();
-    }
+  @AfterEach
+  public void deleteDataBase() {
+    mongoTemplate.getDb().drop();
+  }
 
-    @Test
-    public void should_store_a_recipes() {
-        Recipe recipe = recipeRepository.save(new Recipe("1", "Fried egg with tomato", 2, TestUtil.getIngredients("potato", "egg"), "crack the egg on the pan with little oil.", Category.NON_VEGETARIAN));
-        assertThat(recipe).hasFieldOrPropertyWithValue("title", "Fried egg with tomato");
-        assertThat(recipe).hasFieldOrPropertyWithValue("category", Category.NON_VEGETARIAN);
-        assertThat(recipe).hasFieldOrPropertyWithValue("servings", 2);
-    }
+  @Test
+  public void should_find_no_recipes_if_repository_is_empty() {
+    Iterable<Recipe> recipes = recipeRepository.findAll();
+    assertThat(recipes).isEmpty();
+  }
 
-    @Test
-    public void should_find_all_recipes() {
-        Recipe recipe1 = new Recipe("1", "Fried egg with tomato", 2, TestUtil.getIngredients("potato", "egg"), "crack the egg on the pan with little oil.", Category.NON_VEGETARIAN);
-        recipeRepository.save(recipe1);
+  @Test
+  public void should_store_a_recipes() {
+    Recipe recipe = recipeRepository.save(
+      new Recipe("1", "Fried egg with tomato", 2, TestUtil.getIngredients("potato", "egg"),
+        "crack the egg on the pan with little oil.",
+        Category.NON_VEGETARIAN
+      ));
+    assertThat(recipe).hasFieldOrPropertyWithValue("title", "Fried egg with tomato");
+    assertThat(recipe).hasFieldOrPropertyWithValue("category", Category.NON_VEGETARIAN);
+    assertThat(recipe).hasFieldOrPropertyWithValue("servings", 2);
+  }
 
-        Recipe recipe2 = new Recipe("2", "Fried potatoes", 3, TestUtil.getIngredients("potato", "cauliflower"), "Bake potatoes and cauliflower in oven.", Category.VEGETARIAN);
-        recipeRepository.save(recipe2);
+  @Test
+  public void should_find_all_recipes() {
+    Recipe recipe1 = new Recipe("1", "Fried egg with tomato", 2, TestUtil.getIngredients("potato", "egg"),
+      "crack the egg on the pan with little oil.",
+      Category.NON_VEGETARIAN);
+    recipeRepository.save(recipe1);
 
-        Iterable<Recipe> recipes = recipeRepository.findAll();
-        assertThat(recipes).hasSize(2);
-    }
+    Recipe recipe2 = new Recipe("2", "Fried potatoes", 3, TestUtil.getIngredients("potato", "cauliflower"),
+      "Bake potatoes and cauliflower in oven.",
+      Category.VEGETARIAN);
+    recipeRepository.save(recipe2);
 
-    @Test
-    public void should_find_recipes_by_id() {
-        Recipe recipe1 = new Recipe("1", "Fried egg with tomato", 2, TestUtil.getIngredients("potato", "egg"), "crack the egg on the pan with little oil.", Category.NON_VEGETARIAN);
-        recipeRepository.save(recipe1);
+    Iterable<Recipe> recipes = recipeRepository.findAll();
+    assertThat(recipes).hasSize(2);
+  }
 
-        Recipe recipe2 = new Recipe("2", "Fried potatoes", 3, TestUtil.getIngredients("potato", "cauliflower"), "Bake potatoes and cauliflower in oven.", Category.VEGETARIAN);
-        recipeRepository.save(recipe2);
+  @Test
+  public void should_find_recipes_by_id() {
+    Recipe recipe1 = new Recipe("1", "Fried egg with tomato", 2, TestUtil.getIngredients("potato", "egg"),
+      "crack the egg on the pan with little oil.",
+      Category.NON_VEGETARIAN);
+    recipeRepository.save(recipe1);
 
-        Recipe recipeResult = recipeRepository.findById(recipe2.getId()).get();
-        assertThat(recipeResult.getTitle()).isEqualTo(recipe2.getTitle());
-    }
+    Recipe recipe2 = new Recipe("2", "Fried potatoes", 3, TestUtil.getIngredients("potato", "cauliflower"),
+      "Bake potatoes and cauliflower in oven.",
+      Category.VEGETARIAN);
+    recipeRepository.save(recipe2);
 
-    @Test
-    public void should_update_recipe_by_id() {
-        Recipe recipe1 = new Recipe("1", "Fried egg with tomato", 2, TestUtil.getIngredients("potato", "egg"), "crack the egg on the pan with little oil.", Category.NON_VEGETARIAN);
-        recipeRepository.save(recipe1);
-        
-        Recipe recipe2 = new Recipe("2", "Fried potatoes", 3, TestUtil.getIngredients("potato", "cauliflower"), "Bake potatoes and cauliflower in oven.", Category.VEGETARIAN);
-        recipeRepository.save(recipe2);
+    Recipe recipeResult = recipeRepository.findById(recipe2.getId()).get();
+    assertThat(recipeResult.getTitle()).isEqualTo(recipe2.getTitle());
+  }
 
-        Recipe updatedRecipe = new Recipe("2", "Fried cauliflower and potatoes", 4, TestUtil.getIngredients("potato", "cauliflower"), "Bake potatoes and cauliflower in oven.", Category.VEGETARIAN);
+  @Test
+  public void should_update_recipe_by_id() {
+    Recipe recipe1 = new Recipe("1", "Fried egg with tomato", 2, TestUtil.getIngredients("potato", "egg"),
+      "crack the egg on the pan with little oil.",
+      Category.NON_VEGETARIAN);
+    recipeRepository.save(recipe1);
 
-        Recipe recipe = recipeRepository.findById(recipe2.getId()).get();
-        recipe.setTitle(updatedRecipe.getTitle());
-        recipe.setServings(updatedRecipe.getServings());
-        recipeRepository.save(recipe);
+    Recipe recipe2 = new Recipe("2", "Fried potatoes", 3, TestUtil.getIngredients("potato", "cauliflower"),
+      "Bake potatoes and cauliflower in oven.",
+      Category.VEGETARIAN);
+    recipeRepository.save(recipe2);
 
-        Recipe checkRecipe = recipeRepository.findById(recipe2.getId()).get();
-    
-        assertThat(checkRecipe.getId()).isEqualTo(recipe.getId());
-        assertThat(checkRecipe.getTitle()).isEqualTo(recipe.getTitle());
-        assertThat(checkRecipe.getServings()).isEqualTo(recipe.getServings());
-    }
+    Recipe updatedRecipe = new Recipe("2", "Fried cauliflower and potatoes", 4, TestUtil.getIngredients("potato", "cauliflower"),
+      "Bake potatoes and cauliflower in oven.",
+      Category.VEGETARIAN);
 
-    @Test
-    public void should_delete_recipe_by_id() {
-        Recipe recipe1 = new Recipe("1", "Fried egg with tomato", 2, TestUtil.getIngredients("potato", "egg"), "crack the egg on the pan with little oil.", Category.NON_VEGETARIAN);
-        recipeRepository.save(recipe1);
-            
-        Recipe recipe2 = new Recipe("2", "Fried potatoes", 3, TestUtil.getIngredients("potato", "cauliflower"), "Bake potatoes and cauliflower in oven.", Category.VEGETARIAN);
-        recipeRepository.save(recipe2);
+    Recipe recipe = recipeRepository.findById(recipe2.getId()).get();
+    recipe.setTitle(updatedRecipe.getTitle());
+    recipe.setServings(updatedRecipe.getServings());
+    recipeRepository.save(recipe);
 
-        recipeRepository.deleteById(recipe2.getId());
+    Recipe checkRecipe = recipeRepository.findById(recipe2.getId()).get();
 
-        Iterable<Recipe> recipes = recipeRepository.findAll();
-        assertThat(recipes).hasSize(1);
-    }
+    assertThat(checkRecipe.getId()).isEqualTo(recipe.getId());
+    assertThat(checkRecipe.getTitle()).isEqualTo(recipe.getTitle());
+    assertThat(checkRecipe.getServings()).isEqualTo(recipe.getServings());
+  }
 
-    @Test
-    public void should_delete_all_tutorials() {
-        recipeRepository.save(new Recipe("1", "Fried egg with tomato", 2, TestUtil.getIngredients("potato", "egg"), "crack the egg on the pan with little oil.", Category.NON_VEGETARIAN));
-        recipeRepository.save(new Recipe("2", "Fried potatoes", 3, TestUtil.getIngredients("potato", "cauliflower"), "Bake potatoes and cauliflower in oven.", Category.VEGETARIAN));
+  @Test
+  public void should_delete_recipe_by_id() {
+    Recipe recipe1 = new Recipe("1", "Fried egg with tomato", 2, TestUtil.getIngredients("potato", "egg"),
+      "crack the egg on the pan with little oil.",
+      Category.NON_VEGETARIAN);
+    recipeRepository.save(recipe1);
 
-        recipeRepository.deleteAll();
+    Recipe recipe2 = new Recipe("2","Fried potatoes", 3, TestUtil.getIngredients("potato", "cauliflower"),
+      "Bake potatoes and cauliflower in oven.",
+      Category.VEGETARIAN);
+    recipeRepository.save(recipe2);
 
-        assertThat(recipeRepository.findAll()).isEmpty();
-    }
-} 
+    recipeRepository.deleteById(recipe2.getId());
+
+    Iterable<Recipe> recipes = recipeRepository.findAll();
+    assertThat(recipes).hasSize(1);
+  }
+
+  @Test
+  public void should_delete_all_tutorials() {
+    recipeRepository.save(
+      new Recipe("1", "Fried egg with tomato", 2, TestUtil.getIngredients("potato", "egg"),
+        "crack the egg on the pan with little oil.",
+        Category.NON_VEGETARIAN));
+    recipeRepository.save(
+      new Recipe("2", "Fried potatoes", 3, TestUtil.getIngredients("potato", "cauliflower"),
+        "Bake potatoes and cauliflower in oven.",
+        Category.VEGETARIAN));
+
+    recipeRepository.deleteAll();
+
+    assertThat(recipeRepository.findAll()).isEmpty();
+  }
+}
