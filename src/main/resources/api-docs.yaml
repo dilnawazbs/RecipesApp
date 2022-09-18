@@ -1,0 +1,166 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+paths:
+  /recipes/{id}:
+    get:
+      tags:
+      - recipe-controller
+      operationId: getRecipesById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Recipe'
+    put:
+      tags:
+      - recipe-controller
+      operationId: updateRecipe
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Recipe'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Recipe'
+    delete:
+      tags:
+      - recipe-controller
+      operationId: deleteRecipe
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+    patch:
+      tags:
+      - recipe-controller
+      operationId: updateContact_1
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/merge-patch+json:
+            schema:
+              type: object
+          application/json-patch+json:
+            schema:
+              type: object
+        required: true
+      responses:
+        "200":
+          description: OK
+  /recipes:
+    get:
+      tags:
+      - recipe-controller
+      operationId: getRecipes
+      parameters:
+      - name: filters
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/MultiValueMapStringString'
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Recipe'
+    post:
+      tags:
+      - recipe-controller
+      operationId: createRecipe
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Recipe'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Recipe'
+    delete:
+      tags:
+      - recipe-controller
+      operationId: deleteAllRecipes
+      responses:
+        "200":
+          description: OK
+components:
+  schemas:
+    Recipe:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        servings:
+          type: integer
+          format: int32
+        ingredients:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+        instructions:
+          type: string
+        category:
+          type: string
+          enum:
+          - VEGETARIAN
+          - NON_VEGETARIAN
+    MultiValueMapStringString:
+      type: object
+      properties:
+        all:
+          type: object
+          additionalProperties:
+            type: string
+          writeOnly: true
+        empty:
+          type: boolean
+      additionalProperties:
+        type: array
+        items:
+          type: string
