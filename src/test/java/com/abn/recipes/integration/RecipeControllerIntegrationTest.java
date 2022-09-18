@@ -1,4 +1,4 @@
-package com.abn.recipes.controllers;
+package com.abn.recipes.integration;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

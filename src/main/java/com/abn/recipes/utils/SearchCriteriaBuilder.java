@@ -25,15 +25,15 @@ public class SearchCriteriaBuilder {
             switch(key) {
                 case "servings": queryBuilder.and(qRecipe.servings.eq(Integer.parseInt(value.get(0))));
                     break;
-                case "includes": queryBuilder.and(qRecipe.ingredients.contains(value.get(0)));
+                case "includes": value.forEach(tempVal -> queryBuilder.and(qRecipe.ingredients.contains(tempVal)));
                     break;
-                case "excludes": queryBuilder.andNot(qRecipe.ingredients.contains(value.get(0)));
+                case "excludes": value.forEach(tempVal -> queryBuilder.andNot(qRecipe.ingredients.contains(tempVal)));
                     break;
-                case "instructions": queryBuilder.and(qRecipe.instructions.containsIgnoreCase(value.get(0)));
+                case "instructions": value.forEach(tempVal -> queryBuilder.and(qRecipe.instructions.containsIgnoreCase(tempVal)));
                     break;
-                case "title": queryBuilder.and(qRecipe.title.containsIgnoreCase(value.get(0)));
+                case "title": value.forEach(tempVal -> queryBuilder.and(qRecipe.title.containsIgnoreCase(tempVal)));
                     break;
-                case "category": queryBuilder.and(qRecipe.category.eq(Category.valueOf(value.get(0))));  
+                case "category": queryBuilder.and(qRecipe.category.eq(Category.valueOf(value.get(0))));
                     break;
                 default: 
             }
