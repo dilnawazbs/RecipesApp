@@ -9,6 +9,6 @@ import com.abn.recipes.domain.Recipe;
 @Mapper
 public interface RecipeMapper {
     @Mapping(target = "id", ignore = true)
-    void update(@MappingTarget Recipe recipe, Recipe resourceInput);
+    void update(@MappingTarget Recipe recipe, Recipe recipeInput);
     Recipe asInput(Recipe recipe);
 }
