@@ -1,0 +1,28 @@
+version: '3.6'
+services:
+  mymongodb:
+    image: mongo
+    hostname: mongo
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    networks:
+      - backdb
+  
+  back:
+    build: .
+    container_name: recipeApp
+    environment:
+      - SPRING_DATA_MONGODB_HOST=mongo
+      - SPRING_DATA_MONGODB_PORT=27017
+      - SPRING_DATA_MONGODB_DATABASE=recipe_app_db
+    ports:
+      - 8080:8080
+    depends_on:
+      - mymongodb
+    networks:
+      - backdb
+    
+networks: 
+  backdb:
+    driver: bridge
