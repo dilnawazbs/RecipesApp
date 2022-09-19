@@ -1,7 +1,7 @@
 # RecipesApp
  
 - Spring boot application to manage Recipes and its CRUD operations
-- A web application to demonstrate the functionalities of spring boot coupled with various technolgoies like JPA, MongoDB, Lombok, Junit, Docker etc.
+- A web application to demonstrate the functionalities of spring boot coupled with various technolgoies like Java11, JPA, MongoDB, Lombok, Mapstruct, Junit, Docker etc.
 - This app is developed using test driven development approach.
 - The code coverage is achieved using Junit for unit testing and springBootTest for integration testing
 - Mockitoes were used to test controller to make unit testing light weight
@@ -194,7 +194,7 @@ Content-Type: application/json
 Request body:
 ```
 [
-  { "op": "add", "path": "/servings", "value": 4 },
+  { "op": "replace", "path": "/servings", "value": 4 },
   { "op": "replace", "path": "/ingredients", "value": ["egg white"] }
 ]
 ```
