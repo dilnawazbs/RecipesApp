@@ -1,11 +1,10 @@
 package com.abn.recipes.controllers;
 
+import com.abn.recipes.domain.IORecipe;
 import com.abn.recipes.domain.Recipe;
 import com.abn.recipes.exception.ResourceNotFoundException;
 import com.abn.recipes.services.RecipeService;
-import com.abn.recipes.utils.PatchHelper;
 import com.abn.recipes.utils.PatchMediaType;
-import com.abn.recipes.utils.RecipeMapper;
 import java.util.ArrayList;
 import java.util.List;
 import javax.json.JsonMergePatch;
@@ -32,12 +31,6 @@ public class RecipeController {
 
   @Autowired
   private RecipeService recipeService;
-
-  @Autowired
-  private RecipeMapper mapper;
-
-  @Autowired
-  private PatchHelper patchHelper;
 
   /**
    * Gets the recipes for given id.
@@ -72,8 +65,8 @@ public class RecipeController {
    * @return created {@link Recipe}
    */
   @PostMapping
-  public ResponseEntity<Recipe> createRecipe(@RequestBody Recipe recipe) {
-    return new ResponseEntity<>(recipeService.save(recipe), HttpStatus.CREATED);
+  public ResponseEntity<Recipe> createRecipe(@RequestBody IORecipe recipe) {
+    return new ResponseEntity<>(recipeService.createRecipe(recipe), HttpStatus.CREATED);
   }
 
   /**
@@ -85,11 +78,9 @@ public class RecipeController {
    * @throws ResourceNotFoundException
    */
   @PutMapping("/{id}")
-  public ResponseEntity<Recipe> updateRecipe(@PathVariable(value = "id") String recipeId, @Valid @RequestBody Recipe recipeDetails)
+  public ResponseEntity<Recipe> updateRecipe(@PathVariable(value = "id") String recipeId, @Valid @RequestBody IORecipe recipeDetails)
     throws ResourceNotFoundException {
-    Recipe recipe = recipeService.findRecipeById(recipeId);
-    mapper.update(recipe, recipeDetails);
-    return ResponseEntity.ok(recipeService.save(recipe));
+    return ResponseEntity.ok(recipeService.updateRecipe(recipeId, recipeDetails));
   }
 
   /**
@@ -103,11 +94,7 @@ public class RecipeController {
   @PatchMapping(path = "/{id}", consumes = PatchMediaType.APPLICATION_JSON_PATCH_VALUE)
   public ResponseEntity<Void> updateRecipe(@PathVariable(value = "id") String recipeId, @RequestBody JsonPatch recipePatch)
     throws ResourceNotFoundException {
-    Recipe recipe = recipeService.findRecipeById(recipeId);
-    Recipe recipeResource = mapper.asInput(recipe);
-    Recipe patchedRecipeResource = patchHelper.patch(recipePatch, recipeResource, Recipe.class);
-    mapper.update(recipe, patchedRecipeResource);
-    recipeService.save(recipe);
+    recipeService.saveJsonPatch(recipeId, recipePatch);
     return ResponseEntity.noContent().build();
   }
 
@@ -122,11 +109,7 @@ public class RecipeController {
   @PatchMapping(path = "/{id}", consumes = PatchMediaType.APPLICATION_MERGE_PATCH_VALUE)
   public ResponseEntity<Void> updateContact(@PathVariable(value = "id") String recipeId, @RequestBody JsonMergePatch recipePatch)
     throws ResourceNotFoundException {
-    Recipe recipe = recipeService.findRecipeById(recipeId);
-    Recipe recipeResource = mapper.asInput(recipe);
-    Recipe patchedRecipeResource = patchHelper.mergePatch(recipePatch, recipeResource, Recipe.class);
-    mapper.update(recipe, patchedRecipeResource);
-    recipeService.save(recipe);
+    recipeService.saveMergePatch(recipeId, recipePatch);
     return ResponseEntity.noContent().build();
   }
 

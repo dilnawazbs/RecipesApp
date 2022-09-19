@@ -2,19 +2,16 @@ package com.abn.recipes.controllers;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.abn.recipes.domain.Category;
+import com.abn.recipes.domain.IORecipe;
 import com.abn.recipes.domain.Recipe;
-import com.abn.recipes.repositories.RecipeRepository;
 import com.abn.recipes.services.RecipeService;
-import com.abn.recipes.utils.PatchHelper;
 import com.abn.recipes.utils.PatchMediaType;
-import com.abn.recipes.utils.RecipeMapper;
 import com.abn.recipes.utils.TestUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
@@ -23,6 +20,10 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import javax.json.JsonMergePatch;
+import javax.json.JsonPatch;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -42,16 +43,7 @@ public class RecipeControllerTest {
   private MockMvc mockMvc;
 
   @MockBean
-  private RecipeMapper mapper;
-
-  @MockBean
-  private PatchHelper patchHelper;
-
-  @MockBean
   private RecipeService recipeService;
-
-  @MockBean
-  private RecipeRepository recipeRepository;
 
   @Test
   void shouldCreateRecipe() throws Exception {
@@ -146,9 +138,9 @@ public class RecipeControllerTest {
   void shouldReturnNoContentWhenFilter_Servings5() throws Exception {
     MultiValueMap<String, String> paramsMap = new LinkedMultiValueMap<>();
     paramsMap.add("servings", "5");
-    List<Recipe> tutorials = Collections.emptyList();
+    List<Recipe> recipes = Collections.emptyList();
 
-    when(recipeService.getFilteredRecipe(paramsMap)).thenReturn(tutorials);
+    when(recipeService.getFilteredRecipe(paramsMap)).thenReturn(recipes);
     mockMvc.perform(get("/recipes").params(paramsMap))
       .andExpect(status().isNoContent())
       .andDo(print());
@@ -167,8 +159,7 @@ public class RecipeControllerTest {
       Category.NON_VEGETARIAN
     );
 
-    when(recipeService.findRecipeById(id)).thenReturn(existingRecipe);
-    when(recipeService.save(any(Recipe.class))).thenReturn(updatedRecipe);
+    when(recipeService.updateRecipe(any(String.class), any(IORecipe.class))).thenReturn(updatedRecipe);
 
     mockMvc.perform(put("/recipes/{id}", id)
           .contentType(MediaType.APPLICATION_JSON)
@@ -201,48 +192,35 @@ public class RecipeControllerTest {
   void shouldMergePatchUpdateRecipe() throws Exception {
     String id = "1";
 
-    Recipe existingRecipe = new Recipe(id, "Fried egg with tomato", 2, TestUtil.getIngredients("egg", "tomato"),
-      "crack the egg on the pan with little oil.",
-      Category.NON_VEGETARIAN
-    );
     Recipe updatedRecipe = new Recipe(id, "Fried egg with tomato", 4, TestUtil.getIngredients("egg", "tomato"),
       "crack the egg on the pan with little oil.",
       Category.NON_VEGETARIAN
     );
 
-    when(recipeService.findRecipeById(id)).thenReturn(existingRecipe);
-    when(recipeService.save(any(Recipe.class))).thenReturn(updatedRecipe);
+    when(recipeService.saveMergePatch(any(String.class), any(JsonMergePatch.class))).thenReturn(updatedRecipe);
 
     mockMvc.perform(patch("/recipes/{id}", id)
           .contentType(PatchMediaType.APPLICATION_MERGE_PATCH)
           .content(TestUtil.fromFile("merge-patch.json")))
       .andExpect(status().isNoContent())
       .andDo(print());
-    verify(mapper).asInput(any(Recipe.class));
   }
 
   @Test
   void shouldPatchUpdateRecipe() throws Exception {
     String id = "1";
 
-    Recipe existingRecipe = new Recipe(id, "Fried egg with tomato", 2, TestUtil.getIngredients("egg", "tomato"),
-      "crack the egg on the pan with little oil.",
-      Category.NON_VEGETARIAN
-    );
     Recipe updatedRecipe = new Recipe(id, "Fried egg with tomato", 4, TestUtil.getIngredients("egg", "tomato"),
       "crack the egg on the pan with little oil.",
       Category.NON_VEGETARIAN
     );
 
-    when(recipeService.findRecipeById(id)).thenReturn(existingRecipe);
-    when(recipeService.save(any(Recipe.class))).thenReturn(updatedRecipe);
-
+    when(recipeService.saveJsonPatch(any(String.class), any(JsonPatch.class))).thenReturn(updatedRecipe);
     mockMvc.perform(patch("/recipes/{id}", id)
           .contentType(PatchMediaType.APPLICATION_JSON_PATCH)
           .content(TestUtil.fromFile("json-patch.json")))
       .andExpect(status().isNoContent())
       .andDo(print());
-    verify(mapper).asInput(any(Recipe.class));
   }
 
   @Test
@@ -257,7 +235,7 @@ public class RecipeControllerTest {
   }
 
   @Test
-  void shouldDeleteTutorial() throws Exception {
+  void shouldDeleteRecipe() throws Exception {
     String id = "1";
     doNothing().when(recipeService).deleteRecipeById(id);
     mockMvc.perform(delete("/recipes/{id}", id))
@@ -266,7 +244,7 @@ public class RecipeControllerTest {
   }
 
   @Test
-  void shouldDeleteAllTutorials() throws Exception {
+  void shouldDeleteAllRecipes() throws Exception {
     doNothing().when(recipeService).deleteAllRecipes();
     mockMvc.perform(delete("/recipes"))
       .andExpect(status().is2xxSuccessful())

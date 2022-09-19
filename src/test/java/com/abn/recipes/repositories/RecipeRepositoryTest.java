@@ -34,13 +34,13 @@ public class RecipeRepositoryTest {
   }
 
   @Test
-  public void should_find_no_recipes_if_repository_is_empty() {
+  public void shouldFindNoRecipesIfRepositoryIsEmpty() {
     Iterable<Recipe> recipes = recipeRepository.findAll();
     assertThat(recipes).isEmpty();
   }
 
   @Test
-  public void should_store_a_recipes() {
+  public void shouldStoreARecipes() {
     Recipe recipe = recipeRepository.save(
       new Recipe("1", "Fried egg with tomato", 2, TestUtil.getIngredients("potato", "egg"),
         "crack the egg on the pan with little oil.",
@@ -52,7 +52,7 @@ public class RecipeRepositoryTest {
   }
 
   @Test
-  public void should_find_all_recipes() {
+  public void shouldFindAllRecipes() {
     Recipe recipe1 = new Recipe("1", "Fried egg with tomato", 2, TestUtil.getIngredients("potato", "egg"),
       "crack the egg on the pan with little oil.",
       Category.NON_VEGETARIAN);
@@ -68,7 +68,7 @@ public class RecipeRepositoryTest {
   }
 
   @Test
-  public void should_find_recipes_by_id() {
+  public void shouldFindRecipesById() {
     Recipe recipe1 = new Recipe("1", "Fried egg with tomato", 2, TestUtil.getIngredients("potato", "egg"),
       "crack the egg on the pan with little oil.",
       Category.NON_VEGETARIAN);
@@ -84,7 +84,7 @@ public class RecipeRepositoryTest {
   }
 
   @Test
-  public void should_update_recipe_by_id() {
+  public void shouldUpdateRecipeById() {
     Recipe recipe1 = new Recipe("1", "Fried egg with tomato", 2, TestUtil.getIngredients("potato", "egg"),
       "crack the egg on the pan with little oil.",
       Category.NON_VEGETARIAN);
@@ -112,7 +112,7 @@ public class RecipeRepositoryTest {
   }
 
   @Test
-  public void should_delete_recipe_by_id() {
+  public void shouldDeleteRecipeById() {
     Recipe recipe1 = new Recipe("1", "Fried egg with tomato", 2, TestUtil.getIngredients("potato", "egg"),
       "crack the egg on the pan with little oil.",
       Category.NON_VEGETARIAN);
@@ -130,7 +130,7 @@ public class RecipeRepositoryTest {
   }
 
   @Test
-  public void should_delete_all_tutorials() {
+  public void shouldDeleteAllRecipes() {
     recipeRepository.save(
       new Recipe("1", "Fried egg with tomato", 2, TestUtil.getIngredients("potato", "egg"),
         "crack the egg on the pan with little oil.",

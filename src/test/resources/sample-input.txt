@@ -1,0 +1,38 @@
+{
+    "title": "Grilled potatoes",
+    "servings": 4,
+    "ingredients": [
+        "potatoes" ],
+    "instructions": "Grill potatoes in grill machine for 3 minutes.",
+    "category": "VEGETARIAN"
+}
+
+{
+    "title": "Fried egg with tomato",
+    "servings": 2,
+    "ingredients": [
+        "egg",
+        "tomato" ],
+    "instructions": "Crack the egg on the pan with little oil. And bake in oven for 2 minutes.",
+    "category": "NON_VEGETARIAN"
+}
+
+{
+    "title": "Grilled fish",
+    "servings": 3,
+    "ingredients": [
+        "salmon" ],
+    "instructions": "Add some spice to fish and grill in oven for 2 mins.",
+    "category": "NON_VEGETARIAN"
+}
+
+{
+    "title": "Mixed veg",
+    "servings": 3,
+    "ingredients": [
+        "potatoes",
+        "cauliflowers",
+        "carrots" ],
+    "instructions": "Season all diced vegetables and cook in oven for 10 mins at 225 degree celcius.",
+    "category": "VEGETARIAN"
+}

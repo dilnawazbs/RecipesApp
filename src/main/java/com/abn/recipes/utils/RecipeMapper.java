@@ -1,5 +1,6 @@
 package com.abn.recipes.utils;
 
+import com.abn.recipes.domain.IORecipe;
 import com.abn.recipes.domain.Recipe;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -11,4 +12,6 @@ public interface RecipeMapper {
   void update(@MappingTarget Recipe recipe, Recipe recipeInput);
 
   Recipe asInput(Recipe recipe);
+
+  Recipe asRecipe(IORecipe resourceInput);
 }
