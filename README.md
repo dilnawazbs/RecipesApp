@@ -14,6 +14,7 @@
 - Or create and run image in docker container by running ```docker compose up``` 
 - http://localhost:8080/v3/api-docs/ to get the api specification in JSON format
 - http://localhost:8080/swagger-ui/index.html to get the api specification in html format
+- Attached sample-input.txt in test resources folder
 
 # Features
 - User can perform CRUD operations for recipies.
