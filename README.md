@@ -17,8 +17,8 @@
 - Attached sample-input.txt in test resources folder
 
 # Features
-- User can perform CRUD operations for recipies.
-- User can perform filter to get desired recipies.
+- User can perform CRUD operations for recipes.
+- User can perform filter to get desired recipes.
 
 # REST API
 The REST API to the example app is described below.
