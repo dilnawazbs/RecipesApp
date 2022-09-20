@@ -1,7 +1,7 @@
 # RecipesApp
  
 - Spring boot application to manage Recipes and its CRUD operations
-- A web application to demonstrate the functionalities of spring boot coupled with various technolgoies like JPA, MongoDB, Lombok, Junit, Docker etc.
+- A web application to demonstrate the functionalities of spring boot coupled with various technolgoies like Java11, JPA, MongoDB, Lombok, Mapstruct, Junit, Docker etc.
 - This app is developed using test driven development approach.
 - The code coverage is achieved using Junit for unit testing and springBootTest for integration testing
 - Mockitoes were used to test controller to make unit testing light weight
@@ -14,10 +14,11 @@
 - Or create and run image in docker container by running ```docker compose up``` 
 - http://localhost:8080/v3/api-docs/ to get the api specification in JSON format
 - http://localhost:8080/swagger-ui/index.html to get the api specification in html format
+- Attached sample-input.txt in test resources folder
 
 # Features
-- User can perform CRUD operations for recipies.
-- User can perform filter to get desired recipies.
+- User can perform CRUD operations for recipes.
+- User can perform filter to get desired recipes.
 
 # REST API
 The REST API to the example app is described below.
@@ -194,7 +195,7 @@ Content-Type: application/json
 Request body:
 ```
 [
-  { "op": "add", "path": "/servings", "value": 4 },
+  { "op": "replace", "path": "/servings", "value": 4 },
   { "op": "replace", "path": "/ingredients", "value": ["egg white"] }
 ]
 ```
