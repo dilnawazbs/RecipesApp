@@ -1,7 +1,7 @@
 package com.abn.recipes.utils;
 
 import com.abn.recipes.domain.Category;
-import com.abn.recipes.domain.QRecipe;
+import com.abn.recipes.domain.QRecipeDTO;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import org.springframework.util.MultiValueMap;
@@ -19,7 +19,7 @@ public class SearchCriteriaBuilder {
    */
   public static Predicate addCondition(MultiValueMap<String, String> searchMap) {
     BooleanBuilder queryBuilder = new BooleanBuilder();
-    QRecipe qRecipe = new QRecipe("recipe");
+    QRecipeDTO qRecipe = new QRecipeDTO("recipe");
     searchMap.forEach((key, value) -> {
         switch (key) {
           case "servings":

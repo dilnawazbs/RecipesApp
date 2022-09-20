@@ -7,13 +7,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 @Builder
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class IORecipe {
+@Document(collection = "Recipes")
+public class RecipeDTO {
 
   @Id
   private String id;
@@ -22,5 +24,5 @@ public class IORecipe {
   private Integer servings;
   private Set<String> ingredients;
   private String instructions;
-  private IOCategory category;
+  private Category category;
 }

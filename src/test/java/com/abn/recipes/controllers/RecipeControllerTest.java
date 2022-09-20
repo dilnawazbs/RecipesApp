@@ -8,7 +8,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.abn.recipes.domain.Category;
-import com.abn.recipes.domain.IORecipe;
 import com.abn.recipes.domain.Recipe;
 import com.abn.recipes.services.RecipeService;
 import com.abn.recipes.utils.PatchMediaType;
@@ -149,17 +148,12 @@ public class RecipeControllerTest {
   @Test
   void shouldUpdateRecipe() throws Exception {
     String id = "1";
-
-    Recipe existingRecipe = new Recipe(id, "Fried egg with tomato", 2, TestUtil.getIngredients("egg", "tomato"),
-      "crack the egg on the pan with little oil.",
-      Category.NON_VEGETARIAN
-    );
     Recipe updatedRecipe = new Recipe(id, "Fried egg with tomato", 4, TestUtil.getIngredients("egg", "tomato"),
       "crack the egg on the pan with little oil.",
       Category.NON_VEGETARIAN
     );
 
-    when(recipeService.updateRecipe(any(String.class), any(IORecipe.class))).thenReturn(updatedRecipe);
+    when(recipeService.updateRecipe(any(String.class), any(Recipe.class))).thenReturn(updatedRecipe);
 
     mockMvc.perform(put("/recipes/{id}", id)
           .contentType(MediaType.APPLICATION_JSON)

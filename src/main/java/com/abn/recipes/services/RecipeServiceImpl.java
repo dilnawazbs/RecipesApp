@@ -1,7 +1,7 @@
 package com.abn.recipes.services;
 
-import com.abn.recipes.domain.IORecipe;
 import com.abn.recipes.domain.Recipe;
+import com.abn.recipes.domain.RecipeDTO;
 import com.abn.recipes.exception.ResourceNotFoundException;
 import com.abn.recipes.repositories.RecipeRepository;
 import com.abn.recipes.utils.PatchHelper;
@@ -32,34 +32,29 @@ public class RecipeServiceImpl implements RecipeService {
 
   @Override
   public List<Recipe> getAllRecipes() {
-    return recipeRepository.findAll();
+    return mapper.map(recipeRepository.findAll());
   }
 
   @Override
   public List<Recipe> getFilteredRecipe(MultiValueMap<String, String> filters) {
-    return StreamSupport
+    return mapper.map(StreamSupport
       .stream(recipeRepository
           .findAll(SearchCriteriaBuilder.addCondition(filters))
           .spliterator(),
         false
       )
-      .collect(Collectors.toList());
-  }
-
-  @Override
-  public Recipe createRecipe(final IORecipe recipe) {
-    return save(mapper.asRecipe(recipe));
+      .collect(Collectors.toList()));
   }
 
   @Override
   public Recipe save(final Recipe recipe) {
-    return recipeRepository.save(recipe);
+    return mapper.asRecipe(recipeRepository.save(mapper.asRecipeDTO(recipe)));
   }
 
   @Override
-  public Recipe updateRecipe(final String recipeId, final IORecipe recipeDetails) throws ResourceNotFoundException {
+  public Recipe updateRecipe(final String recipeId, final Recipe recipeDetails) throws ResourceNotFoundException {
     Recipe recipe = findRecipeById(recipeId);
-    mapper.update(recipe, mapper.asRecipe(recipeDetails));
+    mapper.update(recipe, recipeDetails);
     return save(recipe);
   }
 
@@ -84,9 +79,10 @@ public class RecipeServiceImpl implements RecipeService {
   @Override
   public Recipe findRecipeById(String recipeId)
     throws ResourceNotFoundException {
-    return recipeRepository
+      RecipeDTO recipeDTO = recipeRepository
       .findById(recipeId)
       .orElseThrow(() -> new ResourceNotFoundException("Recipe not found for this id :: " + recipeId));
+    return mapper.asRecipe(recipeDTO);
   }
 
   @Override

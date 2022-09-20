@@ -1,6 +1,5 @@
 package com.abn.recipes.controllers;
 
-import com.abn.recipes.domain.IORecipe;
 import com.abn.recipes.domain.Recipe;
 import com.abn.recipes.exception.ResourceNotFoundException;
 import com.abn.recipes.services.RecipeService;
@@ -65,8 +64,8 @@ public class RecipeController {
    * @return created {@link Recipe}
    */
   @PostMapping
-  public ResponseEntity<Recipe> createRecipe(@RequestBody IORecipe recipe) {
-    return new ResponseEntity<>(recipeService.createRecipe(recipe), HttpStatus.CREATED);
+  public ResponseEntity<Recipe> createRecipe(@RequestBody Recipe recipe) {
+    return new ResponseEntity<>(recipeService.save(recipe), HttpStatus.CREATED);
   }
 
   /**
@@ -78,7 +77,7 @@ public class RecipeController {
    * @throws ResourceNotFoundException
    */
   @PutMapping("/{id}")
-  public ResponseEntity<Recipe> updateRecipe(@PathVariable(value = "id") String recipeId, @Valid @RequestBody IORecipe recipeDetails)
+  public ResponseEntity<Recipe> updateRecipe(@PathVariable(value = "id") String recipeId, @Valid @RequestBody Recipe recipeDetails)
     throws ResourceNotFoundException {
     return ResponseEntity.ok(recipeService.updateRecipe(recipeId, recipeDetails));
   }

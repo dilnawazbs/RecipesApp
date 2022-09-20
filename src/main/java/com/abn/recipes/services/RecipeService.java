@@ -1,7 +1,7 @@
 package com.abn.recipes.services;
 
-import com.abn.recipes.domain.IORecipe;
 import com.abn.recipes.domain.Recipe;
+import com.abn.recipes.domain.RecipeDTO;
 import com.abn.recipes.exception.ResourceNotFoundException;
 import java.util.List;
 
@@ -34,20 +34,12 @@ public interface RecipeService {
 
   /**
    *
-   * @param recipeDetails the {@link recipeDetails} to create or update
-   * 
-   * @return the saved {@link Recipe}
-   */
-  Recipe createRecipe(final IORecipe recipeDetails);
-
-  /**
-   *
    * @param recipeId the id of recipe
    * @param recipeDetails the {@link recipeDetails} to create or update
    * 
    * @return the saved {@link Recipe}
    */
-  Recipe updateRecipe(final String recipeId, final IORecipe recipeDetails) throws ResourceNotFoundException;
+  Recipe updateRecipe(final String recipeId, final Recipe recipeDetails) throws ResourceNotFoundException;
 
   /**
    *
@@ -85,7 +77,7 @@ public interface RecipeService {
   void deleteRecipeById(final String recipeId);
 
   /**
-   * Deletes all the {@link Recipe}.
+   * Deletes all the {@link RecipeDTO}.
    */
   void deleteAllRecipes();
 }
